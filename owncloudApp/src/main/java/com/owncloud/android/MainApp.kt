@@ -76,8 +76,6 @@ class MainApp : Application() {
 
         DebugInjector.injectDebugTools(appContext)
 
-        OwnCloudClient.setContext(appContext)
-
         createNotificationChannels()
 
         SingleSessionManager.setUserAgent(userAgent)
