@@ -70,6 +70,13 @@ fun Activity.showMessageInSnackbar(
     Snackbar.make(findViewById(layoutId), message, duration).show()
 }
 
+fun Activity.showMessageInToast(
+    message: CharSequence,
+    duration: Int = Toast.LENGTH_LONG
+) {
+    Toast.makeText(this, message, duration).show()
+}
+
 fun Activity.showErrorInToast(
     genericErrorMessageId: Int,
     throwable: Throwable?,
@@ -91,7 +98,13 @@ fun Activity.goToUrl(
         val uriUrl = Uri.parse(url)
         val intent = Intent(Intent.ACTION_VIEW, uriUrl)
         if (flags != null) intent.addFlags(flags)
-        startActivity(intent)
+
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        } else {
+            this.showMessageInToast(message = getString(R.string.intent_error_no_app_to_handle_it))
+            Timber.e("No Activity found to handle Intent")
+        }
     }
 }
 
@@ -106,7 +119,13 @@ fun Activity.sendEmail(
         putExtra(Intent.EXTRA_SUBJECT, subject)
         if (text != null) putExtra(Intent.EXTRA_TEXT, text)
     }
-    startActivity(intent)
+
+    if (intent.resolveActivity(packageManager) != null) {
+        startActivity(intent)
+    } else {
+        this.showMessageInToast(message = getString(R.string.intent_error_no_app_to_handle_it))
+        Timber.e("No Activity found to handle Intent")
+    }
 }
 
 private fun getIntentForSavedMimeType(data: Uri, type: String): Intent {

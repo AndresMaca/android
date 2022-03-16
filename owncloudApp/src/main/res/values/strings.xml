@@ -647,4 +647,7 @@
     <string name="security_enforced_first_option">Passcode lock</string>
     <string name="security_enforced_second_option">Pattern lock</string>
 
+    <!-- Intent error -->
+    <string name="intent_error_no_app_to_handle_it">There is no application installed to do this</string>
+
 </resources>
